@@ -13,6 +13,11 @@ class Game extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function channels()
+    {
+        return $this->hasMany(Channel::class);
+    }
 }
 
 
