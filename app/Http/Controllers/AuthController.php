@@ -92,7 +92,7 @@ class AuthController extends Controller
         }
     }
 
-    public function myProfile()
+    public function getProfile()
     {
         return response()->json(auth()->user());  //data del token
     }
@@ -192,4 +192,50 @@ class AuthController extends Controller
             );
         }
     }
+
+    public function deleteProfile(){
+
+        try {
+        
+            Log::info('Deleting user profile');
+
+            $user_id = auth()->user()->id;
+           
+            if (!$user_id) {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => 'User not found'
+                    ],
+                    404
+                );
+            }
+
+            $user = User::find($user_id);
+
+            $user->delete();
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'User deleted'
+                ],
+                200
+            );
+
+        } catch (\Exception $exception) {
+
+            Log::error("Error deleting user: " . $exception->getMessage());
+
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Error deleting user'
+                ],
+                500
+            );
+        }
+
+    }
+
 }
