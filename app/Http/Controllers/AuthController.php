@@ -97,14 +97,12 @@ class AuthController extends Controller
         return response()->json(auth()->user());  //data del token
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
         try{
-        $this->validate($request, [
-            'token' => 'required'
-        ]);
-
-            JWTAuth::invalidate($request->token);
+            $token = auth();
+            JWTAuth::invalidate($token);
+            
             return response()->json([
                 'success' => true,
                 'message' => 'User logged out successfully'
