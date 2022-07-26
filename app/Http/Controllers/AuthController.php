@@ -56,4 +56,27 @@ class AuthController extends Controller
             'token' => $jwt_token,
         ]);
     }
+
+    public function getAllUsers(){
+        try {
+            $users = User::query()->get()->toArray();
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'Users retrieved successfully',
+                    'data' => $users
+                ],
+                200
+            );
+        } catch (\Exception $exception) {
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Error retrieving user'.$exception->getMessage()
+                ],
+                500
+            );
+        }
+    }
 }
