@@ -33,15 +33,10 @@ class ChannelController extends Controller
             $gameId = $request->input("game_id");
 
             $channel = new Channel();
-
-            if (isset($channelName)) {
-                $channel->channel_name = $channelName;
-            }
-
-            if (isset($gameId)) {
-                $channel->game_id = $gameId;
-            }
-
+            
+            $channel->channel_name = $channelName;
+            $channel->game_id = $gameId;
+          
             $channel->save();
 
             return response()->json(

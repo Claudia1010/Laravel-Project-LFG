@@ -35,17 +35,9 @@ class MessageController extends Controller
 
             $message = new Message();
 
-            if (isset($channelId)) {
-                $message->channel_id = $channelId;
-            }
-
-            if (isset($messageText)) {
-                $message->message_text = $messageText;
-            }
-
-            if (isset($userId)) {
-                $message->user_id = $userId;
-            }
+            $message->channel_id = $channelId;
+            $message->message_text = $messageText;
+            $message->user_id = $userId;
             
             $message->save();
 

@@ -16,7 +16,7 @@ class UserController extends Controller
             Log::info('Entering channel');
 
             $validator = Validator::make($request->all(), [
-                'channel_id' => 'required|integer'
+                'channel_id' => ['required', 'integer']
             ]);
     
     
@@ -69,7 +69,7 @@ class UserController extends Controller
             Log::info('Leaving channel');
 
             $validator = Validator::make($request->all(), [
-                'channel_id' => 'required|integer'
+                'channel_id' => ['required', 'integer']
             ]);
     
     
@@ -78,6 +78,7 @@ class UserController extends Controller
             }
             //si el channelId es válido, guardo el id pasado en la variable channelId
             $channelId = $request->input('channel_id');
+            
             //$channel es el objeto channel que coincide con el id pasado
             $channel = Channel::find($channelId);
 
