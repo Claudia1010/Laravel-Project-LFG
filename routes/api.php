@@ -40,10 +40,11 @@ Route::group(["middleware" => "jwt.auth"] , function() {
 //routes for channel create CRUD
 Route::group(["middleware" => "jwt.auth"] , function() {
     Route::post('/createChannel', [ChannelController::class, 'createChannel']); 
+    //find channels from a specific game_id by URL
     Route::get('/findChannelsById/{id}', [ChannelController::class, 'findChannelByGameId']);
 });
 
 Route::group(["middleware" => "jwt.auth"] , function() {
     Route::post('/accessChannel', [UserController::class, 'accessChannel']); 
-  
+    Route::post('/leaveChannel', [UserController::class, 'leaveChannel']);
 });
