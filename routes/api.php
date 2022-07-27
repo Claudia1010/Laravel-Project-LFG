@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GameController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,4 +27,10 @@ Route::group(["middleware" => "jwt.auth"] , function() {
     Route::post('/logout', [AuthController::class, 'logout']); 
     Route::put('/update', [AuthController::class, 'updateProfile']);
     Route::delete('/delete', [AuthController::class, 'deleteProfile']);
+});
+
+//routes for games
+Route::group(["middleware" => "jwt.auth"] , function() {
+    Route::post('/createGame', [GameController::class, 'createGame']); 
+  
 });
