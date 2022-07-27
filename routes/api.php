@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\AuthController;
+use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -54,5 +55,5 @@ Route::group(["middleware" => "jwt.auth"] , function() {
 //Routes for message
 Route::group(["middleware" => "jwt.auth"] , function() {
     Route::post('/createMessage', [MessageController::class, 'createMessage']); 
-    
+    Route::get('/getAllMessages/{id}', [MessageController::class, 'getAllMessagesByChannelId']);
 });
