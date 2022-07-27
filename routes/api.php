@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\AuthController;
@@ -40,4 +41,9 @@ Route::group(["middleware" => "jwt.auth"] , function() {
 Route::group(["middleware" => "jwt.auth"] , function() {
     Route::post('/createChannel', [ChannelController::class, 'createChannel']); 
     Route::get('/findChannelsById/{id}', [ChannelController::class, 'findChannelByGameId']);
+});
+
+Route::group(["middleware" => "jwt.auth"] , function() {
+    Route::post('/accessChannel', [UserController::class, 'accessChannel']); 
+  
 });
