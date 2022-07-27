@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\GameController;
@@ -44,7 +45,14 @@ Route::group(["middleware" => "jwt.auth"] , function() {
     Route::get('/findChannelsById/{id}', [ChannelController::class, 'findChannelByGameId']);
 });
 
+//Routes for user
 Route::group(["middleware" => "jwt.auth"] , function() {
     Route::post('/accessChannel', [UserController::class, 'accessChannel']); 
     Route::post('/leaveChannel', [UserController::class, 'leaveChannel']);
+});
+
+//Routes for message
+Route::group(["middleware" => "jwt.auth"] , function() {
+    Route::post('/createMessage', [MessageController::class, 'createMessage']); 
+    
 });

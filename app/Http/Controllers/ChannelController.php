@@ -29,15 +29,18 @@ class ChannelController extends Controller
                 );
             }
 
-            // $user_id = auth()->user()->id;
-
             $channelName = $request->input("channel_name");
             $gameId = $request->input("game_id");
 
             $channel = new Channel();
 
-            $channel->channel_name = $channelName;
-            $channel->game_id = $gameId;
+            if (isset($channelName)) {
+                $channel->channel_name = $channelName;
+            }
+
+            if (isset($gameId)) {
+                $channel->game_id = $gameId;
+            }
 
             $channel->save();
 
