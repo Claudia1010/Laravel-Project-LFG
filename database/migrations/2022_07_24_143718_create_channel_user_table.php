@@ -21,6 +21,8 @@ return new class extends Migration
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('channel_id')->references('id')->on('channels')->onDelete('cascade');
+
+            $table->unique(['user_id', 'channel_id']);
         });
     }
 
