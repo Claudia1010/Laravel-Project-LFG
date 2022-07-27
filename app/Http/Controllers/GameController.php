@@ -13,7 +13,7 @@ class GameController extends Controller
     {
         try {
             Log::info('Creating game');
-
+        
             $validator = Validator::make($request->all(), [
                 'game_name' => ['required', 'string', 'max:255', 'min:3'],
                 'genre' => ['required', 'string', 'max:255', 'min:3'],

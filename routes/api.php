@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
@@ -29,8 +30,14 @@ Route::group(["middleware" => "jwt.auth"] , function() {
     Route::delete('/delete', [AuthController::class, 'deleteProfile']);
 });
 
-//routes for games
+//routes for games create CRUD
 Route::group(["middleware" => "jwt.auth"] , function() {
     Route::post('/createGame', [GameController::class, 'createGame']); 
   
+});
+
+//routes for channel create CRUD
+Route::group(["middleware" => "jwt.auth"] , function() {
+    Route::post('/createChannel', [ChannelController::class, 'createChannel']); 
+    Route::get('/findChannelsById/{id}', [ChannelController::class, 'findChannelByGameId']);
 });
