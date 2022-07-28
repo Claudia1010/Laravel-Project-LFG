@@ -162,7 +162,60 @@ class ChannelController extends Controller
                 500
             );
         }
-}
+    }
+
+    public function deleteChannelById($id){
+
+        try {
+        
+            Log::info('Deleting channel');
+
+            $adminId = auth()->user()->id;
+           
+            if (!$adminId) {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => 'Admin not found'
+                    ],
+                    404
+                );
+            }
+
+            $channel = Channel::find($id);
+
+            if (!$channel) {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => "Missing channel"
+                    ]
+                );
+            }
+            //If adminId and the channel specified with the Id, are okey, proceed with the deletion
+            $channel->delete();
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'Channel deleted'
+                ],
+                200
+            );
+
+        } catch (\Exception $exception) {
+
+            Log::error("Error deleting channel: " . $exception->getMessage());
+
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Error deleting channel'
+                ],
+                500
+            );
+        }
+    }
 }
 
 

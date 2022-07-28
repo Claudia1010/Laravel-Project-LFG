@@ -49,6 +49,7 @@ Route::group(["middleware" => "jwt.auth"] , function() {
     //find channels from a specific game_id by URL
     Route::get('/findChannelsById/{id}', [ChannelController::class, 'findChannelByGameId']);
     Route::put('/updateChannel/{id}', [ChannelController::class, 'updateChannelById']);
+    Route::delete('/deleteChannel/{id}', [ChannelController::class, 'deleteChannelById']);
 });
 
 //Routes for user
