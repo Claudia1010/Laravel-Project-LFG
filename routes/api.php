@@ -35,8 +35,8 @@ Route::group(["middleware" => "jwt.auth"] , function() {
     Route::delete('/delete', [AuthController::class, 'deleteProfile']);
 });
 
-//routes for games create CRUD solo por superAdmins, crear superAdmin middleware luego
-Route::group(["middleware" => "jwt.auth"] , function() {
+//routes for games create CRUD solo por admins
+Route::group(["middleware" => ["jwt.auth", "isAdmin"]] , function() {
     Route::post('/createGame', [GameController::class, 'createGame']); 
     Route::get('/getMyGames', [GameController::class, 'getMyGames']);
     Route::put('/updateMyGame/{id}', [GameController::class, 'updateMyGame']);
@@ -64,4 +64,9 @@ Route::group(["middleware" => "jwt.auth"] , function() {
     Route::get('/getAllMessages/{id}', [MessageController::class, 'getAllMessagesByChannelId']);
     Route::put('/updateMessage/{id}', [MessageController::class, 'updateMessageById']);
     Route::delete('/deleteMessage/{id}', [MessageController::class, 'deleteMessageById']);
+});
+
+Route::group(["middleware" => ["jwt.auth", "isSuperAdmin"]] , function() {
+    Route::post('/user/super_admin/{id}', [UserController::class, 'userToSuperAdmin']);
+    
 });
