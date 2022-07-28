@@ -67,6 +67,7 @@ Route::group(["middleware" => "jwt.auth"] , function() {
 });
 
 Route::group(["middleware" => ["jwt.auth", "isSuperAdmin"]] , function() {
-    Route::post('/user/super_admin/{id}', [UserController::class, 'userToSuperAdmin']);
-    Route::post('/user/remove_super_admin/{id}', [UserController::class, 'superAdminToUser']);
+    Route::post('/user/admin/{id}', [UserController::class, 'userToAdmin']);
+    Route::post('/user/remove_admin/{id}', [UserController::class, 'adminToUser']);
+    Route::post('/user/remove_superadmin/{id}', [UserController::class, 'superAdminToUser']);
 });

@@ -121,11 +121,11 @@ class UserController extends Controller
         }
     }
 
-    public function userToSuperAdmin($userId) {
+    public function userToAdmin($userId) {
 
         try {
             
-            Log::info("Upgrading user to super admin");
+            Log::info("Upgrading user to admin");
 
             $user = User::find($userId);
 
@@ -139,36 +139,36 @@ class UserController extends Controller
                 );
             }
 
-            $user->roles()->attach(self::ROLE_SUPER_ADMIN);
+            $user->roles()->attach(self::ROLE_ADMIN);
 
             return response()->json(
                 [
                     'success' => true,
-                    'message' => 'User '. $user->name .' promoted to super_admin'
+                    'message' => 'User '. $user->name .' promoted to admin'
                 ],
                 201
             );
 
         } catch (\Exception $exception) {
             
-            Log::error("Error promoting user to super_admin" . $exception->getMessage());
+            Log::error("Error promoting user to admin" . $exception->getMessage());
 
             return response()->json(
                 [
                     'success' => false,
-                    'message' => 'Error promoting user to super_admin'
+                    'message' => 'Error promoting user to admin'
                 ],
                 500
             );
         }
     }
 
-    public function superAdminToUser($superId){
+    public function adminToUser($userId){
         try {
 
-            Log::info("Degrading super admin to user");
+            Log::info("Degrading admin to user");
 
-            $user = User::find($superId);
+            $user = User::find($userId);
 
             if(!$user){
                 return response()->json(
@@ -180,12 +180,52 @@ class UserController extends Controller
                 );
             }
 
-            $user->roles()->attach(self::ROLE_DEFAULT_USER);
+            $user->roles()->detach(self::ROLE_DEFAULT_USER);
 
             return response()->json(
                 [
                     'success' => true,
-                    'message' => 'User '. $user->name .' degraded to user'
+                    'message' => 'Admin '. $user->name .' degraded to user'
+                ],
+                201
+            );
+
+        } catch (\Exception $exception) {
+            Log::error("Error degrading admin to user" . $exception->getMessage());
+
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Error degrading admin to user'
+                ],
+                500
+            );
+        }
+    }
+
+    public function superAdminToUser($userId){
+        try {
+
+            Log::info("Degrading super admin to user");
+
+            $user = User::find($userId);
+
+            if(!$user){
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => 'User not found'
+                    ],
+                    404
+                );
+            }
+
+            $user->roles()->detach(self::ROLE_DEFAULT_USER);
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'Super admin '. $user->name .' degraded to user'
                 ],
                 201
             );
