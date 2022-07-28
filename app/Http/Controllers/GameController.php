@@ -169,7 +169,88 @@ class GameController extends Controller
                 500
             );
         }
-
     }
 
+    public function updateMyGame(Request $request, $id){
+    
+            try {
+    
+                Log::info('Updating game');
+                
+                $adminId = auth()->user()->id;
+               
+                if (!$adminId) {
+                    return response()->json(
+                        [
+                            'success' => false,
+                            'message' => 'User not found'
+                        ],
+                        404
+                    );
+                }
+    
+                $game = Game::find($id);
+                
+                $validator = Validator::make($request->all(), [
+                    'game_name' => ['string', 'max:255'],
+                    'genre' => ['string', 'max:255'],
+                    'age' => ['integer'],
+                    'developer' => ['string', 'max:255']
+                ]);
+    
+                if ($validator->fails()) {
+                    return response()->json(
+                        [
+                            'success' => false,
+                            'message' => $validator->errors()
+                        ],
+                        400
+                    );
+                }
+    
+                $gameName = $request->input("game_name");
+                $genre = $request->input("genre");
+                $age = $request-> input("age");
+                $developer = $request -> input("developer");
+    
+                if (isset($gameName)) {
+                    $game->game_name = $gameName;
+                }
+    
+                if (isset($genre)) {
+                    $game->genre = $genre;
+                }
+    
+                if(isset($age)){
+                    $game->age = $age;
+                }
+                if (isset($developer)) {
+                    $game->developer = $developer;
+                }
+    
+                $game->save();
+    
+                return response()->json(
+                    [
+                        'success' => true,
+                        'message' => 'Game updated',
+                        'data' => $game
+                    ],
+                    201
+                );
+            } catch (\Exception $exception) {
+    
+                Log::error("Error updating game: " . $exception->getMessage());
+    
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => 'Error updating game'
+                    ],
+                    500
+                );
+            }
+    }
 }
+
+

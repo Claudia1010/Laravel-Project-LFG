@@ -5,7 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\AuthController;
-
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +39,7 @@ Route::group(["middleware" => "jwt.auth"] , function() {
 Route::group(["middleware" => "jwt.auth"] , function() {
     Route::post('/createGame', [GameController::class, 'createGame']); 
     Route::get('/myGames', [GameController::class, 'getGames']);
+    Route::put('/updateMyGame/{id}', [GameController::class, 'updateMyGame']);
     Route::delete('/deleteMyGame/{id}', [GameController::class, 'deleteMyGame']);
 });
 
