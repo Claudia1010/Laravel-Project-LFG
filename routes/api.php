@@ -35,19 +35,20 @@ Route::group(["middleware" => "jwt.auth"] , function() {
     Route::delete('/delete', [AuthController::class, 'deleteProfile']);
 });
 
-//routes for games create CRUD solo por admins, crear isAdmin middleware luego
+//routes for games create CRUD solo por superAdmins, crear superAdmin middleware luego
 Route::group(["middleware" => "jwt.auth"] , function() {
     Route::post('/createGame', [GameController::class, 'createGame']); 
-    Route::get('/myGames', [GameController::class, 'getGames']);
+    Route::get('/getMyGames', [GameController::class, 'getMyGames']);
     Route::put('/updateMyGame/{id}', [GameController::class, 'updateMyGame']);
     Route::delete('/deleteMyGame/{id}', [GameController::class, 'deleteMyGame']);
 });
 
-//routes for channel create CRUD
+//routes for channel create CRUD only for admins
 Route::group(["middleware" => "jwt.auth"] , function() {
     Route::post('/createChannel', [ChannelController::class, 'createChannel']); 
     //find channels from a specific game_id by URL
     Route::get('/findChannelsById/{id}', [ChannelController::class, 'findChannelByGameId']);
+    Route::put('/updateChannel/{id}', [ChannelController::class, 'updateChannelById']);
 });
 
 //Routes for user

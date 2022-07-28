@@ -69,7 +69,7 @@ class GameController extends Controller
     }
 
     
-    public function myGames()
+    public function getMyGames()
     {
         try {
 
@@ -81,8 +81,6 @@ class GameController extends Controller
             ->where('user_id', '=', $adminId)
             ->get()
             ->toArray();
-
-            // $games = Game::query()->find('user_id', '=', $id)->get()->toArray();
 
             
             if (!$games) {
