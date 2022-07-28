@@ -67,4 +67,55 @@ class GameController extends Controller
             );
         }
     }
+
+    
+    public function myGames()
+    {
+        try {
+
+            Log::info("Getting Games created by admin");
+
+            $adminId = auth()->user()->id;
+
+            $games = Game::query()
+            ->where('user_id', '=', $adminId)
+            ->get()
+            ->toArray();
+
+            // $games = Game::query()->find('user_id', '=', $id)->get()->toArray();
+
+            
+            if (!$games) {
+                return response()->json(
+                    [
+                        'success' => true,
+                        'message' => "You haven't created any game yet"
+                    ],
+                    404
+                );
+            };
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => "Getting games created by admin ".$adminId,
+                    'data' => $games
+                ],
+                200
+            );
+
+        } catch (\Exception $exception) {
+
+            Log::error("Error getting games: " . $exception->getMessage());
+
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => "Error getting games created by admin ".$adminId
+                ],
+                500
+            );
+        }
+    }
+
 }
