@@ -39,6 +39,7 @@ Route::group(["middleware" => "jwt.auth"] , function() {
 Route::group(["middleware" => "jwt.auth"] , function() {
     Route::post('/createGame', [GameController::class, 'createGame']); 
     Route::get('/myGames', [GameController::class, 'getGames']);
+    Route::delete('/deleteMyGame/{id}', [GameController::class, 'deleteMyGame']);
 });
 
 //routes for channel create CRUD
