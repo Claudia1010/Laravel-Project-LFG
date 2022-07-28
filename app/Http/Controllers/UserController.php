@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+    const ROLE_DEFAULT_USER = 1;
+    const ROLE_ADMIN = 2;
     const ROLE_SUPER_ADMIN = 3;
 
     public function accessChannel(Request $request){
@@ -123,6 +125,8 @@ class UserController extends Controller
 
         try {
             
+            Log::info("Upgrading user to super admin");
+
             $user = User::find($userId);
 
             if (!$user) {
@@ -158,4 +162,45 @@ class UserController extends Controller
             );
         }
     }
+
+    public function superAdminToUser($superId){
+        try {
+
+            Log::info("Degrading super admin to user");
+
+            $user = User::find($superId);
+
+            if(!$user){
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => 'User not found'
+                    ],
+                    404
+                );
+            }
+
+            $user->roles()->attach(self::ROLE_DEFAULT_USER);
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'User '. $user->name .' degraded to user'
+                ],
+                201
+            );
+
+        } catch (\Exception $exception) {
+            Log::error("Error degrading super admin to user" . $exception->getMessage());
+
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Error degrading super admin to user'
+                ],
+                500
+            );
+        }
+    }
+
 }
