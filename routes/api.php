@@ -58,8 +58,10 @@ Route::group(["middleware" => "jwt.auth"] , function() {
     Route::post('/leaveChannel', [UserController::class, 'leaveChannel']);
 });
 
-//Routes for message
+//Routes for messages, no extra middleware required
 Route::group(["middleware" => "jwt.auth"] , function() {
     Route::post('/createMessage', [MessageController::class, 'createMessage']); 
     Route::get('/getAllMessages/{id}', [MessageController::class, 'getAllMessagesByChannelId']);
+    Route::put('/updateMessage/{id}', [MessageController::class, 'updateMessageById']);
+    Route::delete('/deleteMessage/{id}', [MessageController::class, 'deleteMessageById']);
 });

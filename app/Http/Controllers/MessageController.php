@@ -117,4 +117,67 @@ class MessageController extends Controller
             );
         }
     }
+
+    public function updateMessageById(Request $request, $id){
+    
+        try {
+
+            Log::info('Updating message');
+            
+            $userId = auth()->user()->id;
+           
+            if (!$userId) {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => 'User not found'
+                    ],
+                    404
+                );
+            }
+
+            $message = Message::find($id);
+            
+            $validator = Validator::make($request->all(), [
+                'message_text' => ['required','string', 'max:65535']
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => $validator->errors()
+                    ],
+                    400
+                );
+            }
+
+            $messageText = $request->input('message_text');
+        
+            $message->message_text = $messageText;
+            
+            $message->save();
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'Message updated',
+                    'data' => $message
+                ],
+                201
+            );
+        }catch (\Exception $exception) {
+
+            Log::error("Error updating message: " . $exception->getMessage());
+
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Error updating message'
+                ],
+                500
+            );
+        }
+    }
+    
 }
