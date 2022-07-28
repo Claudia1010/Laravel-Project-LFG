@@ -179,5 +179,58 @@ class MessageController extends Controller
             );
         }
     }
-    
+
+     public function deleteMessageById($id){
+
+        try {
+        
+            Log::info('Deleting message');
+
+            $userId = auth()->user()->id;
+           
+            if (!$userId) {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => 'User not found'
+                    ],
+                    404
+                );
+            }
+
+            $message = Message::find($id);
+
+            if (!$message) {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => "Missing message"
+                    ]
+                );
+            }
+            //If userId and the message specified with the Id, are okey, proceed with the deletion
+            $message->delete();
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'Message deleted'
+                ],
+                200
+            );
+
+        } catch (\Exception $exception) {
+
+            Log::error("Error deleting message: " . $exception->getMessage());
+
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Error deleting message'
+                ],
+                500
+            );
+        }
+    }
+
 }
