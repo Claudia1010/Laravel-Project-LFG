@@ -17,7 +17,7 @@ class UserController extends Controller
     public function accessChannel(Request $request){
         try {
 
-            Log::info('Entering channel');
+            Log::info('Accessing channel');
 
             $validator = Validator::make($request->all(), [
                 'channel_id' => ['required', 'integer']
@@ -68,6 +68,7 @@ class UserController extends Controller
     }
 
     public function leaveChannel(Request $request){
+        
         try {
 
             Log::info('Leaving channel');
@@ -180,7 +181,7 @@ class UserController extends Controller
                 );
             }
 
-            $user->roles()->detach(self::ROLE_DEFAULT_USER);
+            $user->roles()->detach(self::ROLE_ADMIN);
 
             return response()->json(
                 [
@@ -203,6 +204,48 @@ class UserController extends Controller
         }
     }
 
+    public function userToSuperAdmin($userId) {
+
+        try {
+            
+            $user = User::find($userId);
+
+            if (!$user) {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => 'User not found'
+                    ],
+                    404
+                );
+            }
+
+            $user->roles()->detach(self::ROLE_DEFAULT_USER);
+            $user->roles()->attach(self::ROLE_SUPER_ADMIN);
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'User '. $user->name .' promoted to super_admin'
+                ],
+                201
+            );
+
+        } catch (\Exception $exception) {
+            
+            Log::error("Error promoting user to super_admin" . $exception->getMessage());
+
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Error promoting user to super_admin'
+                ],
+                500
+            );
+        }
+    }
+
+
     public function superAdminToUser($userId){
         try {
 
@@ -220,7 +263,7 @@ class UserController extends Controller
                 );
             }
 
-            $user->roles()->detach(self::ROLE_DEFAULT_USER);
+            $user->roles()->detach(self::ROLE_SUPER_ADMIN);
 
             return response()->json(
                 [
@@ -237,6 +280,53 @@ class UserController extends Controller
                 [
                     'success' => false,
                     'message' => 'Error degrading super admin to user'
+                ],
+                500
+            );
+        }
+    }
+
+    public function getAllAdmins()
+    {
+        try {
+
+            Log::info("Getting Admins created by super admin");
+
+            $superAdminId = auth()->user()->id;
+
+            $admin = User::query()
+            ->where('user_id', '=', $superAdminId)
+            ->get()
+            ->toArray();
+
+            
+            if (!$admin) {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => "You haven't created any admin yet"
+                    ],
+                    404
+                );
+            };
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => "Getting admins created by super admin ".$superAdminId,
+                    'data' => $admin
+                ],
+                200
+            );
+
+        } catch (\Exception $exception) {
+
+            Log::error("Error getting admins: " . $exception->getMessage());
+
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => "Error getting admins created by super admin ".$superAdminId
                 ],
                 500
             );

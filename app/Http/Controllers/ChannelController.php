@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Channel;
+use App\Models\Game;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
@@ -39,6 +40,10 @@ class ChannelController extends Controller
           
             $channel->save();
 
+            $user = auth()->user()->id;
+
+            $channel->users()->attach($user);//attached user to the channel accessed
+
             return response()->json(
                 [
                     'success' => true,
@@ -47,6 +52,7 @@ class ChannelController extends Controller
                 201
             );
         } catch (\Exception $exception) {
+
             Log::error("Error creating channel: " . $exception->getMessage());
 
             return response()->json(
@@ -59,14 +65,14 @@ class ChannelController extends Controller
         }
     }
 
-    public function findChannelByGameId($id)
+    public function findChannelByGameId($gameId)
     {
         try {
 
-            Log::info('Finding channels');
+            Log::info('Finding channels by game id');
 
             $channels = Channel::query()
-                ->where('game_id', '=', $id)//busca el id (pasado por params)= a la clave foranea game_id en el modelo de channel
+                ->where('game_id', '=', $gameId)//busca el id (pasado por params)= a la clave foranea game_id en el modelo de channel
                 ->get()
                 ->toArray();
 

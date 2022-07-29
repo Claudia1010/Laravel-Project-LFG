@@ -20,8 +20,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-//funcion reservada para superadmin
-Route::get('/', [AuthController::class, 'getAllUsers']);
 
 //no requerirán autentificación
 Route::post('/register', [AuthController::class, 'register']);
@@ -66,8 +64,12 @@ Route::group(["middleware" => "jwt.auth"] , function() {
     Route::delete('/deleteMessage/{id}', [MessageController::class, 'deleteMessageById']);
 });
 
+//Superadmin functions 
 Route::group(["middleware" => ["jwt.auth", "isSuperAdmin"]] , function() {
     Route::post('/user/admin/{id}', [UserController::class, 'userToAdmin']);
     Route::post('/user/remove_admin/{id}', [UserController::class, 'adminToUser']);
+    Route::post('/user/super_admin/{id}', [UserController::class, 'userToSuperAdmin']);
     Route::post('/user/remove_superadmin/{id}', [UserController::class, 'superAdminToUser']);
+    Route::get('/user/get_all_admins',[UserController::class, 'getAllAdmins']);
+    Route::get('/', [AuthController::class, 'getAllUsers']);
 });
