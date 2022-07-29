@@ -36,6 +36,7 @@ Route::group(["middleware" => "jwt.auth"] , function() {
 //routes for games create CRUD solo por admins
 Route::group(["middleware" => ["jwt.auth", "isAdmin"]] , function() {
     Route::post('/createGame', [GameController::class, 'createGame']); 
+    Route::get('/getAllGames', [GameController::class, 'getAllGames']);
     Route::get('/getMyGames', [GameController::class, 'getMyGames']);
     Route::put('/updateMyGame/{id}', [GameController::class, 'updateMyGame']);
     Route::delete('/deleteMyGame/{id}', [GameController::class, 'deleteMyGame']);

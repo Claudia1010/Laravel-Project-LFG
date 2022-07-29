@@ -12,6 +12,7 @@ class GameController extends Controller
     public function createGame(Request $request)
     {
         try {
+
             Log::info('Creating game');
         
             $validator = Validator::make($request->all(), [
@@ -31,17 +32,17 @@ class GameController extends Controller
                 );
             }
 
-            $user_id = auth()->user()->id;
+            $userId = auth()->user()->id;
 
-            $game_name = $request->input("game_name");
+            $gameName = $request->input("game_name");
             $genre = $request->input("genre");
             $age = $request->input("age");
             $developer = $request->input("developer");
 
             $game = new Game();
 
-            $game->game_name = $game_name;
-            $game->user_id = $user_id;
+            $game->game_name = $gameName;
+            $game->user_id = $userId;
             $game->genre = $genre;
             $game->age = $age;
             $game->developer = $developer;
@@ -56,6 +57,7 @@ class GameController extends Controller
                 201
             );
         } catch (\Exception $exception) {
+
             Log::error("Error creating game: " . $exception->getMessage());
 
             return response()->json(
@@ -68,6 +70,32 @@ class GameController extends Controller
         }
     }
 
+    public function getAllGames()
+    {
+        try {
+            Log::info('Getting all games');
+            $games = Game::all();
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'Games retrieved successfully',
+                    'data' => $games
+                ]
+            );
+
+        } catch (\Exception $exception) {
+            Log::error("Error retrieving games " . $exception->getMessage());
+
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Error retrieving games'
+                ],
+                500
+            );
+        }
+    }
     
     public function getMyGames()
     {
@@ -116,7 +144,7 @@ class GameController extends Controller
         }
     }
 
-    public function deleteMygame($id){
+    public function deleteMygame($gameId){
 
         try {
         
@@ -134,7 +162,7 @@ class GameController extends Controller
                 );
             }
 
-            $game = Game::find($id);
+            $game = Game::find($gameId);
 
             if (!$game) {
                 return response()->json(
@@ -144,6 +172,16 @@ class GameController extends Controller
                     ]
                 );
             }
+
+            if ($game->user_id != $adminId) {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => 'Game created by another admin'
+                    ]
+                );
+            }
+
             //If adminId and the game specified with the Id, are okey, proceed with the deletion
             $game->delete();
 
@@ -169,7 +207,7 @@ class GameController extends Controller
         }
     }
 
-    public function updateMyGame(Request $request, $id){
+    public function updateMyGame(Request $request, $gameId){
     
             try {
     
@@ -181,14 +219,35 @@ class GameController extends Controller
                     return response()->json(
                         [
                             'success' => false,
-                            'message' => 'User not found'
+                            'message' => 'Admin not found'
                         ],
                         404
                     );
                 }
     
-                $game = Game::find($id);
+                $game = Game::find($gameId);
                 
+                if (!$game) {
+
+                    return response()->json(
+                        [
+                            'success' => false,
+                            'message' => 'Game not found'
+                        ],
+                        404
+                    );
+                }
+
+                if ($game->user_id != $adminId) {
+                    return response()->json(
+                        [
+                            'success' => false,
+                            'message' => 'Game created by another admin'
+                        ],
+                        
+                    );
+                }
+
                 $validator = Validator::make($request->all(), [
                     'game_name' => ['string', 'max:255'],
                     'genre' => ['string', 'max:255'],

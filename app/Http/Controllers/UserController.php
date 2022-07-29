@@ -15,6 +15,7 @@ class UserController extends Controller
     const ROLE_SUPER_ADMIN = 3;
 
     public function accessChannel(Request $request){
+        
         try {
 
             Log::info('Accessing channel');
@@ -27,9 +28,11 @@ class UserController extends Controller
             if ($validator->fails()) {
                 return response()->json($validator->errors()->toJson(), 400);
             }
-            //si el channelId es válido, guardo el id pasado en la variable channelId
+            
+            //checked if the channelId is correct,and save it in channelId
             $channelId = $request->input('channel_id');
-            //$channel es el objeto channel que coincide con el id pasado
+
+            //$channel is the object channel that matchs with the channelId
             $channel = Channel::find($channelId);
 
             if(!$channel){
@@ -50,8 +53,9 @@ class UserController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'User joined successfully to channel'
-            ]);
+                'message' => 'User joined  to channel successfully'
+            ], 200
+        );
 
         } catch (\Exception $exception) {
 
@@ -68,7 +72,7 @@ class UserController extends Controller
     }
 
     public function leaveChannel(Request $request){
-        
+
         try {
 
             Log::info('Leaving channel');
@@ -220,7 +224,7 @@ class UserController extends Controller
                 );
             }
 
-            $user->roles()->detach(self::ROLE_DEFAULT_USER);
+            // $user->roles()->detach(self::ROLE_DEFAULT_USER);
             $user->roles()->attach(self::ROLE_SUPER_ADMIN);
 
             return response()->json(
@@ -264,7 +268,7 @@ class UserController extends Controller
             }
 
             $user->roles()->detach(self::ROLE_SUPER_ADMIN);
-
+            
             return response()->json(
                 [
                     'success' => true,

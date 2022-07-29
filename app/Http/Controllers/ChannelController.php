@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Channel;
-use App\Models\Game;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
@@ -42,7 +41,7 @@ class ChannelController extends Controller
 
             $user = auth()->user()->id;
 
-            $channel->users()->attach($user);//attached user to the channel accessed
+            $channel->users()->attach($user);//attached user to the channel created
 
             return response()->json(
                 [
