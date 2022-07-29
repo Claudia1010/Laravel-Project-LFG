@@ -118,7 +118,7 @@ class MessageController extends Controller
         }
     }
 
-    public function updateMessageById(Request $request, $id){
+    public function updateMessageById(Request $request, $messageId){
     
         try {
 
@@ -136,7 +136,7 @@ class MessageController extends Controller
                 );
             }
 
-            $message = Message::find($id);
+            $message = Message::find($messageId);
             
             $validator = Validator::make($request->all(), [
                 'message_text' => ['required','string', 'max:65535']
@@ -151,6 +151,16 @@ class MessageController extends Controller
                     400
                 );
             }
+
+            if ($message->user_id != $userId) {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => 'Message created by another user'
+                    ]
+                );
+            }
+
 
             $messageText = $request->input('message_text');
         
@@ -180,7 +190,7 @@ class MessageController extends Controller
         }
     }
 
-     public function deleteMessageById($id){
+     public function deleteMessageById($messageId){
 
         try {
         
@@ -198,13 +208,22 @@ class MessageController extends Controller
                 );
             }
 
-            $message = Message::find($id);
+            $message = Message::find($messageId);
 
             if (!$message) {
                 return response()->json(
                     [
                         'success' => false,
                         'message' => "Missing message"
+                    ]
+                );
+            }
+
+            if ($message->user_id != $userId) {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => 'Message created by another user'
                     ]
                 );
             }

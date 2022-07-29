@@ -169,7 +169,7 @@ class ChannelController extends Controller
         }
     }
 
-    public function deleteChannelById($id){
+    public function deleteChannelById($channelId){
 
         try {
         
@@ -187,7 +187,7 @@ class ChannelController extends Controller
                 );
             }
 
-            $channel = Channel::find($id);
+            $channel = Channel::find($channelId);
 
             if (!$channel) {
                 return response()->json(
@@ -197,6 +197,7 @@ class ChannelController extends Controller
                     ]
                 );
             }
+
             //If adminId and the channel specified with the Id, are okey, proceed with the deletion
             $channel->delete();
 
@@ -221,6 +222,50 @@ class ChannelController extends Controller
             );
         }
     }
+
+    public function getAllChannels(){
+
+        try {
+            
+            Log::info('Getting all channels');
+
+            $userId = auth()->user()->id;
+           
+            if (!$userId) {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => 'User not found'
+                    ],
+                    404
+                );
+            }
+
+            $channel = Channel::all();
+
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'You asked it, you got it!',
+                    'data' => $channel
+                ],
+                200
+            );
+
+        } catch (\Exception $exception) {
+
+            Log::error("Error getting channels: " . $exception->getMessage());
+
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => 'Error getting channels'
+                ],
+                500
+            );
+        }
+    }
+
 }
 
 

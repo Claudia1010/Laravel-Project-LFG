@@ -39,6 +39,16 @@ Route::group(["middleware" => "jwt.auth"] , function() {
     Route::post('/leaveChannel', [UserController::class, 'leaveChannel']);
 });
 
+//Routes for users with authentication
+Route::group(["middleware" => "jwt.auth"] , function() {
+    Route::get('/getAllGames', [GameController::class, 'getAllGames']);
+});
+
+//Routes for users with authentication
+Route::group(["middleware" => "jwt.auth"] , function() {
+    Route::get('/getAllChannels', [ChannelController::class, 'getAllChannels']);
+});
+
 //Routes for messages, only user authentication required
 Route::group(["middleware" => "jwt.auth"] , function() {
     Route::post('/createMessage', [MessageController::class, 'createMessage']); 
@@ -47,19 +57,20 @@ Route::group(["middleware" => "jwt.auth"] , function() {
     Route::delete('/deleteMessage/{id}', [MessageController::class, 'deleteMessageById']);
 });
 
-//routes for games only for admins
+//Routes for games only for admins
 Route::group(["middleware" => ["jwt.auth", "isAdmin"]] , function() {
     Route::post('/createGame', [GameController::class, 'createGame']); 
-    Route::get('/getAllGames', [GameController::class, 'getAllGames']);
     Route::get('/getMyGames', [GameController::class, 'getMyGames']);
     Route::put('/updateMyGame/{id}', [GameController::class, 'updateMyGame']);
+    
 });
 
-//routes for channels only for admins
+//Routes for channels only for admins
 Route::group(["middleware" => ["jwt.auth", "isAdmin"]] , function() {
     Route::post('/createChannel', [ChannelController::class, 'createChannel']); 
     Route::get('/findChannelsById/{id}', [ChannelController::class, 'findChannelByGameId']);
     Route::put('/updateChannel/{id}', [ChannelController::class, 'updateChannelById']);
+    
 });
 
 //Superadmin functions 
@@ -70,6 +81,6 @@ Route::group(["middleware" => ["jwt.auth", "isSuperAdmin"]] , function() {
     Route::post('/user/remove_superadmin/{id}', [UserController::class, 'superAdminToUser']);
     Route::get('/user/get_all_admins',[UserController::class, 'getAllAdmins']);
     Route::get('/getAllUsers', [AuthController::class, 'getAllUsers']);
-    Route::delete('/deleteMyGame/{id}', [GameController::class, 'deleteMyGame']);
     Route::delete('/deleteChannel/{id}', [ChannelController::class, 'deleteChannelById']);
+    Route::delete('/deleteGame/{id}', [GameController::class, 'deleteGame']);
 });

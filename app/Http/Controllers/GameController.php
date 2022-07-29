@@ -144,11 +144,11 @@ class GameController extends Controller
         }
     }
 
-    public function deleteMygame($gameId){
+    public function deleteGame($gameId){
 
         try {
         
-            Log::info('Deleting game from admin');
+            Log::info('Deleting game');
 
             $adminId = auth()->user()->id;
            
@@ -173,16 +173,14 @@ class GameController extends Controller
                 );
             }
 
-            if ($game->user_id != $adminId) {
-                return response()->json(
-                    [
-                        'success' => false,
-                        'message' => 'Game created by another admin'
-                    ]
-                );
-            }
-
-            //If adminId and the game specified with the Id, are okey, proceed with the deletion
+            // if ($game->user_id != $adminId) {
+            //     return response()->json(
+            //         [
+            //             'success' => false,
+            //             'message' => 'Game created by another admin'
+            //         ]
+            //     );
+            // }
             $game->delete();
 
             return response()->json(
