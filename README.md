@@ -1,5 +1,6 @@
 
-<img src="https://github.com/Claudia1010/juegoFighter/blob/main/img/geekhubs.png">
+
+<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/controllers/public/img/geekhubs.png">
 
 # Web Application LFG
 
@@ -9,7 +10,7 @@ The aim of this 6th GeeksHubs project is to build a web app LFG, "Looking for Gr
 
 ### Installation
 
-Follow the steps mentioned below to install and run the project.
+#### Follow the steps mentioned below to install and run the project.
 
 1. Clone or download the repository
 ```bash
@@ -29,15 +30,15 @@ cp .env.example .env
 ```bash
 php artisan jwt:secret
 ```
-5. Run the command php artisan migrate
+6. Run the command php artisan migrate
 ```bash
 php artisan migrate
 ```
-6. Run the command php artisan db:seed, para crear los registros en la base de datos.
+7. Run the command php artisan db:seed, para crear los registros en la base de datos.
 ```bash
 php artisan db:seed
 ```
-7. Run php artisan serve from the project root  
+8. Run php artisan serve from the project root  
 ```bash
 php artisan serve
 ```
@@ -49,7 +50,7 @@ As we can see in this screenshot taken from Workbench, the database consists in 
 
 them: users, roles, role_user, games, channels, channel_user and messages.
 
-<img src="https://github.com/Claudia1010/backendFilms/blob/main/img/screenshot.png">
+<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/controllers/public/img/screenshot.png">
 
 The relationship between users and roles is "many to many" , so we must create an intermediate table like in this 
 
@@ -120,11 +121,11 @@ access each of the endpoints:
 ('/deleteMessage/{id}', [MessageController::class, 'deleteMessageById'])
 
 <br/>
-<img src="https://github.com/Claudia1010/backendFilms/blob/main/img/screenshot2.png">
+<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/controllers/public/img/screenshot2.png">
 <br/>
-<img src="https://github.com/Claudia1010/backendFilms/blob/main/img/screenshot3.png">
+<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/controllers/public/img/screenshot3.png">
 <br/>
-<img src="https://github.com/Claudia1010/backendFilms/blob/main/img/screenshot4.png">
+<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/controllers/public/img/screenshot4.png">
 <br/>
 
 #### Admins:
@@ -144,9 +145,9 @@ Also, and obviously, the admins can create, update, see and delete messages:
     - DELETE('/deleteMessage/{id}', [MessageController::class, 'deleteMessageById'])
 
 <br/>
-<img src="https://github.com/Claudia1010/backendFilms/blob/main/img/screenshot5.png">
+<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/controllers/public/img/screenshot5.png">
 <br/>
-<img src="https://github.com/Claudia1010/backendFilms/blob/main/img/screenshot6.png">
+<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/controllers/public/img/screenshot6.png">
 <br/>
 
 #### Superadmins:
@@ -171,11 +172,11 @@ Also the superadmins can create, update, see and delete messages:
 - DELETE('/deleteMessage/{id}', [MessageController::class, 'deleteMessageById'])
 
 <br/>
-<img src="https://github.com/Claudia1010/backendFilms/blob/main/img/screenshot7.png">
+<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/controllers/public/img/screenshot7.png">
 <br/>
-<img src="https://github.com/Claudia1010/backendFilms/blob/main/img/screenshot8.png">
+<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/controllers/public/img/screenshot8.png">
 <br/>
-<img src="https://github.com/Claudia1010/backendFilms/blob/main/img/screenshot9.png">
+<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/controllers/public/img/screenshot9.png">
 <br/>
 
 ## Technologies
