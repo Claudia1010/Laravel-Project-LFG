@@ -49,13 +49,13 @@ Route::group(["middleware" => "jwt.auth"] , function() {
     Route::get('/findChannelsById/{id}', [ChannelController::class, 'findChannelByGameId']);
 });
 
-// //Routes for messages with token
-// Route::group(["middleware" => "jwt.auth"] , function() {
-//     Route::post('/createMessage', [MessageController::class, 'createMessage']); 
-//     Route::get('/getAllMessages/{id}', [MessageController::class, 'getAllMessagesByChannelId']);
-//     Route::put('/updateMessage/{id}', [MessageController::class, 'updateMessageById']);
-//     Route::delete('/deleteMessage/{id}', [MessageController::class, 'deleteMessageById']);
-// });
+//Routes for messages with token
+Route::group(["middleware" => "jwt.auth"] , function() {
+    Route::post('/createMessage', [MessageController::class, 'createMessage']); 
+    Route::get('/getAllMessages/{id}', [MessageController::class, 'getAllMessagesByChannelId']);
+    Route::put('/updateMessage/{id}', [MessageController::class, 'updateMessageById']);
+    Route::delete('/deleteMessage/{id}', [MessageController::class, 'deleteMessageById']);
+});
 
 //Routes for games with Admin Token
 Route::group(["middleware" => ["jwt.auth", "isAdmin"]] , function() {
@@ -68,6 +68,13 @@ Route::group(["middleware" => ["jwt.auth", "isAdmin"]] , function() {
 Route::group(["middleware" => ["jwt.auth", "isAdmin"]] , function() {
     Route::post('/createChannel', [ChannelController::class, 'createChannel']); 
     Route::put('/updateChannel/{id}', [ChannelController::class, 'updateChannelById']); 
+});
+
+//Routes for messages with admin token
+Route::group(["middleware" => ["jwt.auth", "isAdmin"]] , function() {
+    Route::post('/createAdminMessage', [MessageController::class, 'createAdminMessage']); 
+    Route::put('/updateAdminMessage/{id}', [MessageController::class, 'updateAdminMessageById']);
+    Route::delete('/deleteAdminMessage/{id}', [MessageController::class, 'deleteAdminMessageById']);
 });
 
 //Superadmin functions, superAdmin Token needed and userId/adminId by URL
@@ -88,11 +95,3 @@ Route::group(["middleware" => ["jwt.auth", "isSuperAdmin"]] , function() {
 Route::group(["middleware" => ["jwt.auth", "isSuperAdmin"]] , function() {
     Route::delete('/deleteGame/{id}', [GameController::class, 'deleteGameById']);
 }); 
-
-//Routes for messages with Superadmin token
-Route::group(["middleware" => ["jwt.auth", "isAdmin", "isSuperAdmin"]] , function() {
-    Route::post('/createMessage', [MessageController::class, 'createMessage']); 
-    Route::get('/getAllMessages/{id}', [MessageController::class, 'getAllMessagesByChannelId']);
-    Route::put('/updateMessage/{id}', [MessageController::class, 'updateMessageById']);
-    Route::delete('/deleteMessage/{id}', [MessageController::class, 'deleteMessageById']);
-});
