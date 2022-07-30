@@ -1,64 +1,187 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+<img src="https://github.com/Claudia1010/juegoFighter/blob/main/img/geekhubs.png">
 
-## About Laravel
+# Web Application LFG
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The aim of this 6th GeeksHubs project is to build a web app LFG, "Looking for Group". This app should allow a company's employees to stay in contact with each other, chatting in different categories channels and playing online videogames.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## User Guide
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Installation
 
-## Learning Laravel
+Follow the steps mentioned below to install and run the project.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Clone or download the repository
+```bash
+git clone https://github.com/Claudia1010/Laravel-Project-LFG.git
+```
+2. Go to the project directory and run composer install
+```bash
+composer install
+```
+3. Create .env file by copying the .env.example. You may use the command to do that cp .env.example .env, but make sure the .env already exists.
+```bash
+cp .env.example .env
+```
+4. Update the database name and credentials from the Workbench database, in the .env file
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+5. Run the command php artisan jwt:secret
+```bash
+php artisan jwt:secret
+```
+5. Run the command php artisan migrate
+```bash
+php artisan migrate
+```
+6. Run the command php artisan db:seed, para crear los registros en la base de datos.
+```bash
+php artisan db:seed
+```
+7. Run php artisan serve from the project root  
+```bash
+php artisan serve
+```
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Database and relationships
 
-### Premium Partners
+As we can see in this screenshot taken from Workbench, the database consists in 7 simple tables connected between
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+them: users, roles, role_user, games, channels, channel_user and messages.
 
-## Contributing
+<img src="https://github.com/Claudia1010/backendFilms/blob/main/img/screenshot.png">
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+The relationship between users and roles is "many to many" , so we must create an intermediate table like in this 
 
-## Code of Conduct
+case called role_user.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+The relationship between users and role_user is "1 to many" (1:n), and the relationship between roles and 
 
-## Security Vulnerabilities
+role_user is exactly the same (1:n).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+The same kind of relationship has the table users with games, is "1 to many" (1:n), because one user can create 
 
-## License
+many games but a game can be created for only one user, the admin in this case.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Exactly the same happens between games and channels, one game can have multiple channels (similar to chat rooms) 
+
+and a channel belongs to a single game (like a category), it is again a "1 to many" (1:n).
+
+But relationship between channels and users is "many to many", and the intermediate table is called channel_user 
+
+where we will keep the foreigns keys for user_id and channel_id.
+
+Then we have another 2 more "1 to many" (1:n) table relationships: between channels and messages, because one 
+
+channel might have multiple messages, and one specific message belongs only to one channel. And between users and 
+
+messages, because one user can write many messages but one message can be written only by one particular person.
+
+
+## Endpoints
+
+The root for all the endpoints will be:
+
+http://localhost:8000
+
+Endpoint-function links: The method to enter in Postman is specified, and what we must enter after the root to 
+
+access each of the endpoints:
+
+#### No Token required:
+
+- POST to REGISTER a user: ('/register', [AuthController::class, 'register'])
+- POST to LOGIN a user, where the token will be given: ('/register', [AuthController::class, 'login'])
+
+#### Users:
+
+- GET the user profile: ('/profile', [AuthController::class, 'getProfile'])
+- PUT to update the user profile: ('/update', [AuthController::class, 'updateProfile'])
+- POST to logout from the session: ('/logout', [AuthController::class, 'logout'])
+- DELETE to delete the user profile from the app:('/delete', [AuthController::class, 'deleteProfile'])
+
+- GET to check all the games available: ('/getAllGames', [GameController::class, 'getAllGames'])
+
+- GET to check all the channels created: ('/getAllChannels', [ChannelController::class, 'getAllChannels'])
+- GET to filter the channels by the game id: 
+('/findChannelsById/{id}', [ChannelController::class, 'findChannelByGameId']);
+
+- POST to join a channel, where it will be attached the channel_id: 
+('/accessChannel', [UserController::class, 'accessChannel'])
+- POST to leave a channel, where the channel_id given will be removed:
+('/leaveChannel', [UserController::class, 'leaveChannel'])
+
+- GET to bring all the messages from a channel id:
+('/getAllMessages/{id}', [MessageController::class, 'getAllMessagesByChannelId'])
+- POST to create a new message: ('/createMessage', [MessageController::class, 'createMessage'])
+- PUT to update an existing message, checking it belongs to the creator: 
+('/updateMessage/{id}', [MessageController::class, 'updateMessageById'])
+- DELETE to delete a message given the message id:
+('/deleteMessage/{id}', [MessageController::class, 'deleteMessageById'])
+
+<br/>
+<img src="https://github.com/Claudia1010/backendFilms/blob/main/img/screenshot2.png">
+<br/>
+<img src="https://github.com/Claudia1010/backendFilms/blob/main/img/screenshot3.png">
+<br/>
+<img src="https://github.com/Claudia1010/backendFilms/blob/main/img/screenshot4.png">
+<br/>
+
+#### Admins:
+
+- POST to create a new game, giving some details like name, genre, age and developer:
+('/createGame', [GameController::class, 'createGame'])
+- GET to check all the games created by the admin registered: ('/getMyGames', [GameController::class, 'getMyGames'])
+- PUT to update any attribute of an existing game: ('/updateMyGame/{id}', [GameController::class, 'updateMyGame'])
+
+- POST to create a new channel: ('/createChannel', [ChannelController::class, 'createChannel'])
+- PUT to update a channel: ('/updateChannel/{id}', [ChannelController::class, 'updateChannelById'])
+
+Also, and obviously, the admins can create, update, see and delete messages:
+    - POST('/createMessage', [MessageController::class, 'createMessage'])
+    - GET('/getAllMessages/{id}', [MessageController::class, 'getAllMessagesByChannelId'])
+    - PUT('/updateMessage/{id}', [MessageController::class, 'updateMessageById'])
+    - DELETE('/deleteMessage/{id}', [MessageController::class, 'deleteMessageById'])
+
+<br/>
+<img src="https://github.com/Claudia1010/backendFilms/blob/main/img/screenshot5.png">
+<br/>
+<img src="https://github.com/Claudia1010/backendFilms/blob/main/img/screenshot6.png">
+<br/>
+
+#### Superadmins:
+
+- POST to promote an user to admin role: ('/user/admin/{id}', [UserController::class, 'userToAdmin'])
+- POST to downgrade an admin to user: ('/user/remove_admin/{id}', [UserController::class, 'adminToUser'])
+- POST to promote a user to superadmin: ('/user/super_admin/{id}', [UserController::class, 'userToSuperAdmin'])
+- POST to downgrade a superadmin to user: 
+('/user/remove_superadmin/{id}', [UserController::class, 'superAdminToUser'])
+- GET to check all the existing users: ('/getAllUsers', [UserController::class, 'getAllUsers'])
+
+Only the superadmins could delete channels and games given the Id by params (URL):
+
+- DELETE('/deleteChannel/{id}', [ChannelController::class, 'deleteChannelById'])
+- DELETE('/deleteGame/{id}', [GameController::class, 'deleteGameById'])
+
+Also the superadmins can create, update, see and delete messages:
+
+- POST('/createMessage', [MessageController::class, 'createMessage'])
+- GET('/getAllMessages/{id}', [MessageController::class, 'getAllMessagesByChannelId'])
+- PUT('/updateMessage/{id}', [MessageController::class, 'updateMessageById'])
+- DELETE('/deleteMessage/{id}', [MessageController::class, 'deleteMessageById'])
+
+<br/>
+<img src="https://github.com/Claudia1010/backendFilms/blob/main/img/screenshot7.png">
+<br/>
+<img src="https://github.com/Claudia1010/backendFilms/blob/main/img/screenshot8.png">
+<br/>
+<img src="https://github.com/Claudia1010/backendFilms/blob/main/img/screenshot9.png">
+<br/>
+
+## Technologies
+
+<code><img width="10%" src="https://www.vectorlogo.zone/logos/heroku/heroku-ar21.svg"></code>
+<code><img width="10%" src="https://www.vectorlogo.zone/logos/mysql/mysql-ar21.svg"></code>
+<code><img width="10%" src="https://www.vectorlogo.zone/logos/laravel/laravel-ar21.svg"></code>
+<code><img width="10%" src="https://www.vectorlogo.zone/logos/php/php-icon.svg"></code>
+<code><img width="10%" src="https://www.vectorlogo.zone/logos/getpostman/getpostman-ar21.svg"></code>
