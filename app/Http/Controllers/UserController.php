@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Spatie\LaravelIgnition\Recorders\DumpRecorder\Dump;
 
 class UserController extends Controller
 {
@@ -290,47 +291,27 @@ class UserController extends Controller
         }
     }
 
-    public function getAllAdmins()
+    public function getAllUsers()
     {
         try {
-
-            Log::info("Getting Admins created by super admin");
-
-            $superAdminId = auth()->user()->id;
-
-            $admin = User::query()
-            ->where('user_id', '=', $superAdminId)
-            ->get()
-            ->toArray();
-
-            
-            if (!$admin) {
-                return response()->json(
-                    [
-                        'success' => false,
-                        'message' => "You haven't created any admin yet"
-                    ],
-                    404
-                );
-            };
+            Log::info('Getting all users');
+            $users = User::all();
 
             return response()->json(
                 [
                     'success' => true,
-                    'message' => "Getting admins created by super admin ".$superAdminId,
-                    'data' => $admin
-                ],
-                200
+                    'message' => 'Users retrieved successfully',
+                    'data' => $users
+                ]
             );
 
         } catch (\Exception $exception) {
-
-            Log::error("Error getting admins: " . $exception->getMessage());
+            Log::error("Error retrieving users " . $exception->getMessage());
 
             return response()->json(
                 [
                     'success' => false,
-                    'message' => "Error getting admins created by super admin ".$superAdminId
+                    'message' => 'Error retrieving users'
                 ],
                 500
             );

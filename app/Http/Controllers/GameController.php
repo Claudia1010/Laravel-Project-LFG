@@ -144,7 +144,7 @@ class GameController extends Controller
         }
     }
 
-    public function deleteGame($gameId){
+    public function deleteGameById($gameId){
 
         try {
         

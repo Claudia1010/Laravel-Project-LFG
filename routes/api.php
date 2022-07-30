@@ -5,8 +5,6 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\AuthController;
-use App\Models\Role;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -21,11 +19,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//no auth required
+
+//no token required
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-//routes for users with authentification
+//routes for users with token
 Route::group(["middleware" => "jwt.auth"] , function() {
     Route::get('/profile', [AuthController::class, 'getProfile']);
     Route::post('/logout', [AuthController::class, 'logout']); 
@@ -33,23 +32,23 @@ Route::group(["middleware" => "jwt.auth"] , function() {
     Route::delete('/delete', [AuthController::class, 'deleteProfile']);
 });
 
-//Routes for users with authentication
+//Routes for users with token
 Route::group(["middleware" => "jwt.auth"] , function() {
     Route::post('/accessChannel', [UserController::class, 'accessChannel']); 
     Route::post('/leaveChannel', [UserController::class, 'leaveChannel']);
 });
 
-//Routes for users with authentication
+//Routes for users with token
 Route::group(["middleware" => "jwt.auth"] , function() {
     Route::get('/getAllGames', [GameController::class, 'getAllGames']);
 });
 
-//Routes for users with authentication
+//Routes for users with token
 Route::group(["middleware" => "jwt.auth"] , function() {
     Route::get('/getAllChannels', [ChannelController::class, 'getAllChannels']);
 });
 
-//Routes for messages, only user authentication required
+//Routes for messages with token
 Route::group(["middleware" => "jwt.auth"] , function() {
     Route::post('/createMessage', [MessageController::class, 'createMessage']); 
     Route::get('/getAllMessages/{id}', [MessageController::class, 'getAllMessagesByChannelId']);
@@ -57,7 +56,7 @@ Route::group(["middleware" => "jwt.auth"] , function() {
     Route::delete('/deleteMessage/{id}', [MessageController::class, 'deleteMessageById']);
 });
 
-//Routes for games only for admins
+//Routes for games with Admin Token
 Route::group(["middleware" => ["jwt.auth", "isAdmin"]] , function() {
     Route::post('/createGame', [GameController::class, 'createGame']); 
     Route::get('/getMyGames', [GameController::class, 'getMyGames']);
@@ -65,7 +64,7 @@ Route::group(["middleware" => ["jwt.auth", "isAdmin"]] , function() {
     
 });
 
-//Routes for channels only for admins
+//Routes for channels with Admin Token
 Route::group(["middleware" => ["jwt.auth", "isAdmin"]] , function() {
     Route::post('/createChannel', [ChannelController::class, 'createChannel']); 
     Route::get('/findChannelsById/{id}', [ChannelController::class, 'findChannelByGameId']);
@@ -73,14 +72,13 @@ Route::group(["middleware" => ["jwt.auth", "isAdmin"]] , function() {
     
 });
 
-//Superadmin functions 
+//Superadmin functions, superAdmin Token needed and userId/adminId by URL
 Route::group(["middleware" => ["jwt.auth", "isSuperAdmin"]] , function() {
     Route::post('/user/admin/{id}', [UserController::class, 'userToAdmin']);
     Route::post('/user/remove_admin/{id}', [UserController::class, 'adminToUser']);
     Route::post('/user/super_admin/{id}', [UserController::class, 'userToSuperAdmin']);
     Route::post('/user/remove_superadmin/{id}', [UserController::class, 'superAdminToUser']);
-    Route::get('/user/get_all_admins',[UserController::class, 'getAllAdmins']);
-    Route::get('/getAllUsers', [AuthController::class, 'getAllUsers']);
+    Route::get('/getAllUsers', [UserController::class, 'getAllUsers']);
     Route::delete('/deleteChannel/{id}', [ChannelController::class, 'deleteChannelById']);
-    Route::delete('/deleteGame/{id}', [GameController::class, 'deleteGame']);
+    Route::delete('/deleteGame/{id}', [GameController::class, 'deleteGameById']);
 });
