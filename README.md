@@ -1,6 +1,6 @@
 
 
-<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/controllers/public/img/geekhubs.png">
+<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/main/public/img/geekhubs.png">
 
 # Web Application LFG
 
@@ -50,7 +50,7 @@ As we can see in this screenshot taken from Workbench, the database consists in 
 
 them: users, roles, role_user, games, channels, channel_user and messages.
 
-<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/controllers/public/img/screenshot.png">
+<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/main/public/img/screenshot.png">
 
 The relationship between users and roles is "many to many" , so we must create an intermediate table like in this 
 
@@ -121,11 +121,11 @@ access each of the endpoints:
 ('/deleteMessage/{id}', [MessageController::class, 'deleteMessageById'])
 
 <br/>
-<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/controllers/public/img/screenshot2.png">
+<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/main/public/img/screenshot2.png">
 <br/>
-<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/controllers/public/img/screenshot3.png">
+<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/main/public/img/screenshot3.png">
 <br/>
-<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/controllers/public/img/screenshot4.png">
+<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/main/public/img/screenshot4.png">
 <br/>
 
 #### Admins:
@@ -145,9 +145,9 @@ Also, and obviously, the admins can create, update, see and delete messages:
     - DELETE('/deleteMessage/{id}', [MessageController::class, 'deleteMessageById'])
 
 <br/>
-<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/controllers/public/img/screenshot5.png">
+<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/main/public/img/screenshot5.png">
 <br/>
-<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/controllers/public/img/screenshot6.png">
+<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/main/public/img/screenshot6.png">
 <br/>
 
 #### Superadmins:
@@ -172,11 +172,11 @@ Also the superadmins can create, update, see and delete messages:
 - DELETE('/deleteMessage/{id}', [MessageController::class, 'deleteMessageById'])
 
 <br/>
-<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/controllers/public/img/screenshot7.png">
+<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/main/public/img/screenshot7.png">
 <br/>
-<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/controllers/public/img/screenshot8.png">
+<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/main/public/img/screenshot8.png">
 <br/>
-<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/controllers/public/img/screenshot9.png">
+<img src="https://github.com/Claudia1010/Laravel-Project-LFG/blob/main/public/img/screenshot9.png">
 <br/>
 
 ## Technologies
