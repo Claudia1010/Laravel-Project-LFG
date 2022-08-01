@@ -83,7 +83,9 @@ messages, because one user can write many messages but one message can be writte
 
 The root for all the endpoints will be:
 
-http://localhost:8000
+LOCAL: http://localhost:8000/api
+
+HEROKU: https://laravel-lfg-07-2022.herokuapp.com/api
 
 Endpoint-function links: The method to enter in Postman is specified, and what we must enter after the root to 
 
