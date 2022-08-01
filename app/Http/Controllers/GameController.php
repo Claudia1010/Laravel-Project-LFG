@@ -173,14 +173,6 @@ class GameController extends Controller
                 );
             }
 
-            // if ($game->user_id != $adminId) {
-            //     return response()->json(
-            //         [
-            //             'success' => false,
-            //             'message' => 'Game created by another admin'
-            //         ]
-            //     );
-            // }
             $game->delete();
 
             return response()->json(

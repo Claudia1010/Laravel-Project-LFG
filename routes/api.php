@@ -70,13 +70,6 @@ Route::group(["middleware" => ["jwt.auth", "isAdmin"]] , function() {
     Route::put('/updateChannel/{id}', [ChannelController::class, 'updateChannelById']); 
 });
 
-//Routes for messages with admin token
-Route::group(["middleware" => ["jwt.auth", "isAdmin"]] , function() {
-    Route::post('/createAdminMessage', [MessageController::class, 'createAdminMessage']); 
-    Route::put('/updateAdminMessage/{id}', [MessageController::class, 'updateAdminMessageById']);
-    Route::delete('/deleteAdminMessage/{id}', [MessageController::class, 'deleteAdminMessageById']);
-});
-
 //Superadmin functions, superAdmin Token needed and userId/adminId by URL
 Route::group(["middleware" => ["jwt.auth", "isSuperAdmin"]] , function() {
     Route::post('/user/admin/{id}', [UserController::class, 'userToAdmin']);
