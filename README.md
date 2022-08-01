@@ -186,3 +186,4 @@ Also the superadmins can create, update, see and delete messages:
 <code><img width="10%" src="https://www.vectorlogo.zone/logos/laravel/laravel-ar21.svg"></code>
 <code><img width="10%" src="https://www.vectorlogo.zone/logos/php/php-icon.svg"></code>
 <code><img width="10%" src="https://www.vectorlogo.zone/logos/getpostman/getpostman-ar21.svg"></code>
+<code><img width="10%" src="https://cdn.auth0.com/blog/jwtc/jwt_05.jpg"></code>
