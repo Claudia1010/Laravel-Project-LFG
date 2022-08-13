@@ -9,12 +9,12 @@ class Message extends Model
 {
     use HasFactory;
 
-    public function channel()
+    public function channels()
     {
         return $this->belongsTo(Channel::class);
     }
 
-    public function user()
+    public function users()
     {
         return $this->belongsTo(User::class);
     }
